@@ -7,40 +7,39 @@ class Board {
     constructor(width, height) {
         this.width = width
         this.height = height
-        this.grid = this.createGrid(width, height)
+        this.grid = this.createGrid()
+        this.resultGrid = this.createGrid()
     }
 
     createGrid() {
         let grid = []
 
-        for(let i = 0; i < this.width; i++) {
-            grid[i] = []
+        for(let col = 0; col < this.width; col++) {
+            grid[col] = []
         }
 
-        for(let i = 0; i < this.width; i++){
-            for(let j = 0; j < this.height; j++) {
-                grid[i][j] = DEAD
+        for(let col = 0; col < this.width; col++){
+            for(let row = 0; row < this.height; row++) {
+                grid[col][row] = DEAD
             }
         }
         return grid
     }
 
     clearGrid() {
-        for(let i = 0; i < this.width; i++) {
-            for(let j = 0; j < this.height; j++) {
-                this.grid[i][j] = DEAD;
+        for(let col = 0; col < this.width; col++) {
+            for(let row = 0; row < this.height; row++) {
+                this.grid[col][row] = DEAD;
             }
         }
     }
 
-    setCell(x, y, status) {
-        if(this.grid[x] != undefined) {
-            if(this.grid[x][y] != undefined) {
-                this.grid[x][y] = status
-            }
+    setCell(grid, x, y, status) {
+        if(x < this.width && y < this.height){
+            grid[x][y] = status
         }
         else {
-            console.error( '(' + x + ', ' + y + ') is out of bounds.')
+            console.error('(' + x + ', ' + y + ') is out of bounds.')
         }
     }
 
@@ -71,27 +70,70 @@ class Board {
     }
 
     nextState(x, y) {
-        let neighbors = this.printGrid.liveNeighbors(x, y)
+        let neighbors = this.liveNeighbors(x, y)
         let cellStatus = this.getCell(x, y)
 
         if(cellStatus == ALIVE) {
             if(neighbors != 2 && neighbors != 3) {
-                this.setCell(x, y, DEAD)
+                return DEAD
             }
+            return ALIVE
         }
         else {
             if(neighbors == 3){
-                this.setCell(x, y, ALIVE)
+                return ALIVE
+            }
+            return DEAD
+        }
+    }
+
+    swapGrids() {
+        var wrapper = {}
+        wrapper.wrappedGrid = this.grid
+        wrapper.wrappedGridResult = this.resultGrid
+
+        let temp = wrapper.wrappedGrid
+        wrapper.wrappedGrid = wrapper.wrappedResultGrid
+        wrapper.wrappedResultGrid = temp
+    }
+
+    copyResults() {
+        for(let col = 0; col < this.width; col++) {
+            for(let row = 0; row < this.height; row++) {
+                this.grid[col][row] = this.resultGrid[col][row]
             }
         }
+    }
+
+
+    tick() {
+        for(let col = 0; col < this.width; col++) {
+            for(let row = 0; row < this.height; row++) {
+                this.setCell(this.resultGrid, col, row, this.nextState(col, row));
+            }
+        }
+        this.copyResults()
     }
 
     printGrid() {
         let str = ''
 
-        for(let i = 0; i < this.width; i++){
-            this.grid[i].forEach(function (cell){
-                str += cell + '|'
+        for(let col = 0; col < this.width; col++){
+            this.grid[col].forEach(function (cell){
+                str += cell + ' | '
+            })
+            console.log(str)
+            str = ''
+        }
+    }
+
+
+    printResultGrid() {
+        let str = ''
+
+        for(let col = 0; col < this.width; col++){
+            this.resultGrid[col].forEach(function (cell){
+                str += cell + ' | '
             })
             console.log(str)
             str = ''
@@ -99,25 +141,26 @@ class Board {
     }
 }
 
-let boardy = new Board(10, 8)
+let boardy = new Board(6, 5)
 
 boardy.createGrid()
-boardy.setCell(0, 1, ALIVE)
-boardy.setCell(1, 0, ALIVE)
-boardy.setCell(1, 1, ALIVE)
-boardy.setCell(9, 7, ALIVE)
-boardy.setCell(9, 0, ALIVE)
-boardy.setCell(0, 7, ALIVE)
-boardy.setCell(2, 7, ALIVE)
-boardy.setCell(9, 1, ALIVE)
-boardy.setCell(1, 7, ALIVE)
+boardy.setCell(boardy.grid, 0, 0, ALIVE)
+boardy.setCell(boardy.grid, 1, 1, ALIVE)
+boardy.setCell(boardy.grid, 2, 2, ALIVE)
+boardy.setCell(boardy.grid, 3, 3, ALIVE)
+boardy.setCell(boardy.grid, 4, 4, ALIVE)
 
 boardy.printGrid()
+console.log('__________________________________')
 
-console.log('0, 0 neighbors: ' + boardy.liveNeighbors(0, 0))
-console.log('2, 0 neighbors: ' + boardy.liveNeighbors(2, 0))
-console.log('0, 1 neighbors: ' + boardy.liveNeighbors(0, 1))
-console.log('4, 4 neighbors: ' + boardy.liveNeighbors(4, 4))
-
-boardy.clearGrid()
+boardy.tick()
 boardy.printGrid()
+console.log('__________________________________')
+
+boardy.tick()
+boardy.printGrid()
+console.log('__________________________________')
+
+boardy.tick()
+boardy.printGrid()
+console.log('__________________________________')
