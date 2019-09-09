@@ -4,13 +4,11 @@ const DEAD = 0
 const ALIVE = 1
 
 class Board {
-    constructor(width, height, delay) {
+    constructor(width, height) {
         this.width = width
         this.height = height
-        this.delay = delay
         this.grid = this.createGrid()
         this.resultGrid = this.createGrid()
-        this.pause = true;
     }
 
     createGrid() {
@@ -34,6 +32,18 @@ class Board {
                 this.grid[col][row] = DEAD;
             }
         }
+    }
+
+    getWidth() {
+        return this.width
+    }
+
+    setWidth(width) {
+        this.width = width
+    }
+
+    setHeight(height) {
+        this.height = height
     }
 
     setCell(grid, x, y, status) {
@@ -130,14 +140,6 @@ class Board {
       }
 
       return liveCell
-    }
-
-    play() {
-        while(!pause && !this.deadGrid()) {
-            setTimeout(function() {
-                this.tick()
-            }, this.delay)
-        }
     }
 
     printGrid() {
