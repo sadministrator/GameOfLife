@@ -42,7 +42,8 @@ $('#next').click(function(event) {
 })
 
 $('#clear').click(function(event) {
-    console.log('clear')
+    console.log('Grid cleared.')
+    game.board.clearGrid()
 })
 
 class UI {
@@ -100,10 +101,11 @@ class UI {
 
     play(obj) {
         let intervalId = setInterval(function() {
-            if(!obj.getPause() && !obj.board.deadGrid()) {
+            if(obj.getPause() || obj.board.deadGrid()) {
                 clearInterval(intervalId)
+            } else {
+                obj.next()
             }
-            obj.next()
         })
     }
 }
