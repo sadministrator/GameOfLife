@@ -115,6 +115,25 @@ class Board {
         this.copyResults()
     }
 
+    deadGrid() {
+      liveCell = false;
+
+      for(let col = 0; col < this.width; col ++) {
+        for(let row = 0; row < this.height; row++) {
+          if(this.grid[col][row] == ALIVE){
+            liveCell = true
+            return liveCell
+          }
+        }
+      }
+
+      return liveCell
+    }
+
+    run() {
+      
+    }
+
     printGrid() {
         let str = ''
 

@@ -18,23 +18,43 @@ body {
     background: #CAFAFE;
     height: 80rem;
     font-family: 'Gayathri', sans-serif;
+    margin: 0;
 }
 
 #banner {
     grid-area: banner;
     display: flex;
     justify-content: center;
+    align-items: center;
     background: #3FEEE6;
 }
 
 #main {
     grid-area: main;
     display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
     background: #FC4445;
+}
+
+.controller {
+  width: 90%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#screen {
+  width: 85%;
+  height: 85%;
+  background: black;
 }
 
 #footer {
     grid-area: footer;
     display: flex;
+    align-items: center;
+    justify-content: center;
     background: #55BCC9;
 }
