@@ -128,18 +128,14 @@ class Board {
     }
 
     deadGrid() {
-      liveCell = false;
-
       for(let col = 0; col < this.width; col ++) {
         for(let row = 0; row < this.height; row++) {
           if(this.grid[col][row] == ALIVE){
-            liveCell = true
-            return liveCell
+            return false
           }
         }
       }
-
-      return liveCell
+      return true
     }
 
     printGrid() {
