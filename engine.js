@@ -4,11 +4,13 @@ const DEAD = 0
 const ALIVE = 1
 
 class Board {
-    constructor(width, height) {
+    constructor(width, height, delay) {
         this.width = width
         this.height = height
+        this.delay = delay
         this.grid = this.createGrid()
         this.resultGrid = this.createGrid()
+        this.pause = true;
     }
 
     createGrid() {
@@ -130,8 +132,12 @@ class Board {
       return liveCell
     }
 
-    run() {
-      
+    play() {
+        while(!pause && !this.deadGrid()) {
+            setTimeout(function() {
+                this.tick()
+            }, this.delay)
+        }
     }
 
     printGrid() {
@@ -159,27 +165,3 @@ class Board {
         }
     }
 }
-
-let boardy = new Board(6, 5)
-
-boardy.createGrid()
-boardy.setCell(boardy.grid, 0, 0, ALIVE)
-boardy.setCell(boardy.grid, 1, 1, ALIVE)
-boardy.setCell(boardy.grid, 2, 2, ALIVE)
-boardy.setCell(boardy.grid, 3, 3, ALIVE)
-boardy.setCell(boardy.grid, 4, 4, ALIVE)
-
-boardy.printGrid()
-console.log('__________________________________')
-
-boardy.tick()
-boardy.printGrid()
-console.log('__________________________________')
-
-boardy.tick()
-boardy.printGrid()
-console.log('__________________________________')
-
-boardy.tick()
-boardy.printGrid()
-console.log('__________________________________')
