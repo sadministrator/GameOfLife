@@ -15,7 +15,7 @@ $('#cols').change(function(event) {
 })
 
 $('#create').click(function(event) {
-    console.log('Create board.')
+    console.log('Created board.')
     game.render()
 })
 
@@ -45,6 +45,9 @@ $('#clear').click(function(event) {
     console.log('Grid cleared.')
     game.board.clearGrid()
 })
+
+let screen = document.querySelector('#screen')
+let ctx = screen.getContext('2d')
 
 class UI {
     constructor(width, height, delay) {
@@ -90,7 +93,22 @@ class UI {
     }
 
     render() {
+        let screenWidth = screen.offsetWidth
+        let screenHeight = screen.offsetHeight
 
+        let widthRatio = screenWidth / this.getWidth()
+        let heightRatio = screenHeight / this.getHeight()
+
+        for(let col = 0; col < this.width; col++) {
+            for(let row = 0; row < this.height; row++) {
+                if(this.board.grid[col][row] == ALIVE) {
+                    ctx.fillStyle = "green"
+                } else {
+                    ctx.fillStyle = "red"
+                }
+                ctx.fillRect(col * widthRatio, row * heightRatio, widthRatio, heightRatio)
+            }
+        }
     }
 
     next() {
