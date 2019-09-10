@@ -46,9 +46,6 @@ $('#clear').click(function(event) {
     game.board.clearGrid()
 })
 
-let screen = document.querySelector('#screen')
-let ctx = screen.getContext('2d')
-
 class UI {
     constructor(width, height, delay) {
         this.width = width
@@ -93,22 +90,23 @@ class UI {
     }
 
     render() {
-        let screenWidth = screen.offsetWidth
-        let screenHeight = screen.offsetHeight
 
-        let widthRatio = screenWidth / this.getWidth()
-        let heightRatio = screenHeight / this.getHeight()
+        let table = '<table>'
 
         for(let col = 0; col < this.width; col++) {
+            table += '<tr>'
+
             for(let row = 0; row < this.height; row++) {
-                if(this.board.grid[col][row] == ALIVE) {
-                    ctx.fillStyle = "green"
-                } else {
-                    ctx.fillStyle = "red"
-                }
-                ctx.fillRect(col * widthRatio, row * heightRatio, widthRatio, heightRatio)
+                table += '<td id="' + col + '-' + row + '" onclick="toggleCell()">'
             }
+            table += '</tr>'
         }
+        table += '</table>'
+        $('#screen').html(table)
+    }
+
+    toggleCell() {
+        this.css('background', 'green')
     }
 
     next() {
