@@ -103,13 +103,18 @@ class UI {
         var table = $('#table');
         table.empty()
 
-        for (var col = 0; col < this.width; col++) {
+        for(var col = 0; col < this.getWidth(); col++) {
             var tableRow = $('<tr>');
             table.append(tableRow)
-            for (var row = 0; row < this.height; row++) {
+            for(var row = 0; row < this.getHeight(); row++) {
                 var cell = $('<td id="' + col + '-' + row + '">')
                 cell.attr('x', col);
                 cell.attr('y', row)
+                if(this.board.getCell(col, row) == ALIVE) {
+                    cell.css('background', 'green')
+                } else {
+                    cell.css('background', 'red')
+                }
                 tableRow.append(cell);
             }
         }
@@ -142,7 +147,15 @@ class UI {
     }
 
     render() {
-
+        for(let col = 0; col < this.getWidth(); col++) {
+            for(let row = 0; row < this.getHeight(); row++) {
+                if(this.board.getCell(col, row) == ALIVE) {
+                    $('#' + col + '-' + row).css('backgroundColor', 'green')
+                } else {
+                    $('#' + col + '-' + row).css('backgroundColor', 'red')
+                }
+            }
+        }
     }
 }
 
