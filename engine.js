@@ -141,10 +141,10 @@ class Board {
     printGrid() {
         let str = ''
 
-        for(let col = 0; col < this.width; col++){
-            this.grid[col].forEach(function (cell){
-                str += cell + ' | '
-            })
+        for(let col = 0; col < this.width; col++) {
+            for(let row = 0; row < this.height; row++) {
+                str += this.grid[col][row] + ' | '
+            }
             console.log(str)
             str = ''
         }

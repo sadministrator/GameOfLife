@@ -16,7 +16,10 @@ $('#cols').change(function(event) {
 
 $('#create').click(function(event) {
     console.log('Created board.')
-    game.render()
+    game.setHeight($('#rows').val())
+    game.setWidth($('#cols').val())
+    game.setDelay($('#delay').val())
+    game.createTable()
 })
 
 $('#delay').change(function(event) {
@@ -26,6 +29,9 @@ $('#delay').change(function(event) {
 
 $('#play').click(function(event) {
     console.log('Game playing.')
+    game.setHeight($('#rows').val())
+    game.setWidth($('#cols').val())
+    game.setDelay($('#delay').val())
     game.setPause(false)
     game.play(game)
     // make next unclickable
@@ -44,6 +50,10 @@ $('#next').click(function(event) {
 $('#clear').click(function(event) {
     console.log('Grid cleared.')
     game.board.clearGrid()
+})
+
+$('#table').on('click', 'td', function(event) {
+    game.toggleCell($(this).attr('x'), $(this).attr('y'))
 })
 
 class UI {
@@ -89,24 +99,30 @@ class UI {
         this.pause = pause
     }
 
-    render() {
+    createTable() {
+        var table = $('#table');
+        table.empty()
 
-        let table = '<table>'
-
-        for(let col = 0; col < this.width; col++) {
-            table += '<tr>'
-
-            for(let row = 0; row < this.height; row++) {
-                table += '<td id="' + col + '-' + row + '" onclick="toggleCell()">'
+        for (var col = 0; col < this.width; col++) {
+            var tableRow = $('<tr>');
+            table.append(tableRow)
+            for (var row = 0; row < this.height; row++) {
+                var cell = $('<td id="' + col + '-' + row + '">')
+                cell.attr('x', col);
+                cell.attr('y', row)
+                tableRow.append(cell);
             }
-            table += '</tr>'
         }
-        table += '</table>'
-        $('#screen').html(table)
     }
 
-    toggleCell() {
-        this.css('background', 'green')
+    toggleCell(x, y) {
+        if(this.board.getCell(x, y) == ALIVE) {
+            this.board.setCell(this.board.grid, x, y, DEAD)
+            $('#' + x + '-' + y).css('backgroundColor', 'red')
+        } else {
+            this.board.setCell(this.board.grid, x, y, ALIVE)
+            $('#' + x + '-' + y).css('backgroundColor', 'green')
+        }
     }
 
     next() {
@@ -123,6 +139,10 @@ class UI {
                 obj.next()
             }
         })
+    }
+
+    render() {
+
     }
 }
 
