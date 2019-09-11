@@ -42,16 +42,28 @@ class Board {
         this.width = width
     }
 
+    getHeight() {
+        return this.height
+    }
+
     setHeight(height) {
         this.height = height
     }
 
     setCell(grid, x, y, status) {
-        if(x < this.width && y < this.height){
-            grid[x][y] = status
+        let xInt = parseInt(x)
+        let yInt = parseInt(y)
+
+        if(xInt < this.width && yInt < this.height){
+            console.log(this.grid)
+            console.log('xInt: ' + xInt + ' yInt: ' + yInt)
+            grid[xInt][yInt] = status
+            console.log('xInt: ' + xInt + ' yInt: ' + yInt)
+
         }
         else {
             console.error('(' + x + ', ' + y + ') is out of bounds.')
+            console.error('Width: ' + this.width + ' Height: ' + this.height)
         }
     }
 

@@ -7,11 +7,13 @@ $('#api').click(function(event) {
 $('#rows').change(function(event) {
     console.log('Updated rows: ' + $('#rows').val())
     game.setHeight($('#rows').val())
+    console.log('Proof: ' + game.getHeight() + ' board too: ' + game.board.getHeight())
 })
 
 $('#cols').change(function(event) {
     console.log('Updated cols: ' + $('#cols').val())
     game.setWidth($('#cols').val())
+    console.log('Proof: ' + game.getWidth() + ' board too: ' + game.board.getWidth())
 })
 
 $('#create').click(function(event) {
@@ -19,7 +21,12 @@ $('#create').click(function(event) {
     game.setHeight($('#rows').val())
     game.setWidth($('#cols').val())
     game.setDelay($('#delay').val())
+    game.board.grid = game.board.createGrid()
+    game.board.resultsGrid = game.board.createGrid()
+    console.log(game.board.grid)
+    //game.board.clearGrid()
     game.createTable()
+    game.render()
 })
 
 $('#delay').change(function(event) {
@@ -29,17 +36,22 @@ $('#delay').change(function(event) {
 
 $('#play').click(function(event) {
     console.log('Game playing.')
-    game.setHeight($('#rows').val())
-    game.setWidth($('#cols').val())
+    //game.setHeight($('#rows').val())
+    //game.setWidth($('#cols').val())
     game.setDelay($('#delay').val())
     game.setPause(false)
     game.play(game)
-    // make next unclickable
+    $(this).addClass('inactive')
+    $('#next').addClass('inactive')
+    $('#pause').removeClass('inactive')
 })
 
 $('#pause').click(function(event) {
     console.log('Game paused.')
     game.setPause(true)
+    $(this).addClass('inactive')
+    ('#play').removeClass('inactive')
+    ('#next').removeClass('inactive')
 })
 
 $('#next').click(function(event) {
@@ -50,6 +62,7 @@ $('#next').click(function(event) {
 $('#clear').click(function(event) {
     console.log('Grid cleared.')
     game.board.clearGrid()
+    game.render()
 })
 
 $('#table').on('click', 'td', function(event) {
@@ -59,10 +72,18 @@ $('#table').on('click', 'td', function(event) {
 class UI {
     constructor(width, height, delay) {
         this.width = width
+        $('#cols').val(width)
+
         this.height = height
+        $('#rows').val(height)
+
         this.delay = delay
+        $('#delay').val(delay)
+
         this.pause = true
         this.board = new Board(width, height)
+        this.createTable()
+        this.render()
     }
 
     getWidth() {
@@ -110,11 +131,11 @@ class UI {
                 var cell = $('<td id="' + col + '-' + row + '">')
                 cell.attr('x', col);
                 cell.attr('y', row)
-                if(this.board.getCell(col, row) == ALIVE) {
-                    cell.css('background', 'green')
-                } else {
-                    cell.css('background', 'red')
-                }
+                //if(this.board.getCell(col, row) == ALIVE) {
+                //    cell.css('background', 'green')
+                //} else {
+                //    cell.css('background', 'red')
+                //}
                 tableRow.append(cell);
             }
         }
@@ -159,9 +180,9 @@ class UI {
     }
 }
 
-let game = new UI(10, 10, 50)
+let game = new UI(13, 13, 100)
 
-game.board.setCell(game.board.grid, 0, 0, ALIVE)
+/*game.board.setCell(game.board.grid, 0, 0, ALIVE)
 game.board.setCell(game.board.grid, 4, 5, ALIVE)
 game.board.setCell(game.board.grid, 2, 8, ALIVE)
 game.board.setCell(game.board.grid, 9, 5, ALIVE)
@@ -178,4 +199,4 @@ game.board.setCell(game.board.grid, 3, 4, ALIVE)
 game.board.setCell(game.board.grid, 5, 2, ALIVE)
 game.board.setCell(game.board.grid, 4, 5, ALIVE)
 
-game.board.printGrid()
+game.board.printGrid()*/
