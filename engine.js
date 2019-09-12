@@ -57,9 +57,10 @@ class Board {
         if(xInt < this.width && yInt < this.height){
             console.log(this.grid)
             console.log('xInt: ' + xInt + ' yInt: ' + yInt)
+            //if(grid[xInt] == undefined) {
+            //    grid[xInt] = []
+            //}
             grid[xInt][yInt] = status
-            console.log('xInt: ' + xInt + ' yInt: ' + yInt)
-
         }
         else {
             console.error('(' + x + ', ' + y + ') is out of bounds.')

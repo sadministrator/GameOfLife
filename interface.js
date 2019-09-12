@@ -5,15 +5,14 @@ $('#api').click(function(event) {
 })
 
 $('#rows').change(function(event) {
-    console.log('Updated rows: ' + $('#rows').val())
     game.setHeight($('#rows').val())
-    console.log('Proof: ' + game.getHeight() + ' board too: ' + game.board.getHeight())
+    console.log('Updated rows: ' + $('#rows').val())
+
 })
 
 $('#cols').change(function(event) {
-    console.log('Updated cols: ' + $('#cols').val())
     game.setWidth($('#cols').val())
-    console.log('Proof: ' + game.getWidth() + ' board too: ' + game.board.getWidth())
+    console.log('Updated cols: ' + $('#cols').val())
 })
 
 $('#create').click(function(event) {
@@ -35,34 +34,36 @@ $('#delay').change(function(event) {
 })
 
 $('#play').click(function(event) {
-    console.log('Game playing.')
     //game.setHeight($('#rows').val())
     //game.setWidth($('#cols').val())
+    $(this).attr('disabled', 'disabled')
+    $('#next').attr('disabled', 'disabled')
+    $('#pause').removeAttr('disabled')
     game.setDelay($('#delay').val())
     game.setPause(false)
     game.play(game)
-    $(this).addClass('inactive')
-    $('#next').addClass('inactive')
-    $('#pause').removeClass('inactive')
+    console.log('Game playing.')
 })
 
 $('#pause').click(function(event) {
-    console.log('Game paused.')
+    $(this).attr('disabled', 'disabled')
+    $('#play').removeAttr('disabled')
+    $('#next').removeAttr('disabled')
     game.setPause(true)
-    $(this).addClass('inactive')
-    ('#play').removeClass('inactive')
-    ('#next').removeClass('inactive')
+    console.log('Game paused.')
 })
 
 $('#next').click(function(event) {
-    console.log('Next frame.')
     game.next()
+    console.log('Next frame.')
 })
 
 $('#clear').click(function(event) {
-    console.log('Grid cleared.')
+    game.setPause(true)
+    $('#pause').attr('disabled', 'disabled')
     game.board.clearGrid()
     game.render()
+    console.log('Grid cleared.')
 })
 
 $('#table').on('click', 'td', function(event) {
@@ -129,7 +130,7 @@ class UI {
             table.append(tableRow)
             for(var row = 0; row < this.getHeight(); row++) {
                 var cell = $('<td id="' + col + '-' + row + '">')
-                cell.attr('x', col);
+                cell.attr('x', col)
                 cell.attr('y', row)
                 //if(this.board.getCell(col, row) == ALIVE) {
                 //    cell.css('background', 'green')
