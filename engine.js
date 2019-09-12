@@ -9,21 +9,39 @@ class Board {
         this.height = height
         this.grid = this.createGrid()
         this.resultGrid = this.createGrid()
+        //this.createGrids()
     }
 
     createGrid() {
-        let grid = []
+        let grid = new Array(parseInt(this.width)).fill(0)
 
         for(let col = 0; col < this.width; col++) {
-            grid[col] = []
+            grid[col] = new Array(parseInt(this.height)).fill(0)
         }
 
-        for(let col = 0; col < this.width; col++){
-            for(let row = 0; row < this.height; row++) {
-                grid[col][row] = DEAD
-            }
-        }
+        //for(let col = 0; col < this.width; col++) {
+        //    grid[col] = []
+        //}
+
+        //for(let col = 0; col < this.width; col++){
+         //   for(let row = 0; row < this.height; row++) {
+        //        grid[col][row] = DEAD
+        //    }
+        //}
         return grid
+    }
+
+    createGrids() {
+        let newBoard = new Array(parseInt(this.width)).fill(0)
+        let newResultsBoard = new Array(parseInt(this.height))
+
+        for(let col = 0; col < this.width; col++) {
+            newBoard[col] = new Array(parseInt(this.height)).fill(0)
+            newResultsBoard[col] = new Array(parseInt(this.height)).fill(0)
+        }
+
+        this.grid = newBoard
+        this.resultsGrid = newResultsBoard
     }
 
     clearGrid() {
@@ -55,7 +73,7 @@ class Board {
         let yInt = parseInt(y)
 
         if(xInt < this.width && yInt < this.height){
-            console.log(this.grid)
+            console.log(this.width + ' ' + this.height)
             console.log('xInt: ' + xInt + ' yInt: ' + yInt)
             //if(grid[xInt] == undefined) {
             //    grid[xInt] = []
@@ -64,7 +82,6 @@ class Board {
         }
         else {
             console.error('(' + x + ', ' + y + ') is out of bounds.')
-            console.error('Width: ' + this.width + ' Height: ' + this.height)
         }
     }
 

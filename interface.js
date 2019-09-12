@@ -20,6 +20,7 @@ $('#create').click(function(event) {
     game.setHeight($('#rows').val())
     game.setWidth($('#cols').val())
     game.setDelay($('#delay').val())
+    //game.board.createGrids()
     game.board.grid = game.board.createGrid()
     game.board.resultsGrid = game.board.createGrid()
     console.log(game.board.grid)
@@ -132,11 +133,6 @@ class UI {
                 var cell = $('<td id="' + col + '-' + row + '">')
                 cell.attr('x', col)
                 cell.attr('y', row)
-                //if(this.board.getCell(col, row) == ALIVE) {
-                //    cell.css('background', 'green')
-                //} else {
-                //    cell.css('background', 'red')
-                //}
                 tableRow.append(cell);
             }
         }
