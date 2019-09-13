@@ -188,7 +188,7 @@ class UI {
             } else {
                 obj.next()
             }
-        })
+        }, obj.delay)
     }
 
     // render() goes through the board grid and colors the corresponding
