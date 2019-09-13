@@ -1,49 +1,33 @@
 'use strict'
 
+// maps the DEAD and ALIVE states to ints
 const DEAD = 0
 const ALIVE = 1
 
+// this class takes care of creating and evaluating everything to do
+// with the grid arrays which represent the game board and are used
+// to create the <table> representation
 class Board {
     constructor(width, height) {
         this.width = width
         this.height = height
         this.grid = this.createGrid()
         this.resultGrid = this.createGrid()
-        //this.createGrids()
     }
 
+    // this function creates a new array of arrays according to
+    // width and height and returns the new array
     createGrid() {
         let grid = new Array(parseInt(this.width)).fill(0)
 
         for(let col = 0; col < this.width; col++) {
             grid[col] = new Array(parseInt(this.height)).fill(0)
         }
-
-        //for(let col = 0; col < this.width; col++) {
-        //    grid[col] = []
-        //}
-
-        //for(let col = 0; col < this.width; col++){
-         //   for(let row = 0; row < this.height; row++) {
-        //        grid[col][row] = DEAD
-        //    }
-        //}
         return grid
     }
 
-    createGrids() {
-        let newBoard = new Array(parseInt(this.width)).fill(0)
-        let newResultBoard = new Array(parseInt(this.height))
-
-        for(let col = 0; col < this.width; col++) {
-            newBoard[col] = new Array(parseInt(this.height)).fill(0)
-            newResultBoard[col] = new Array(parseInt(this.height)).fill(0)
-        }
-
-        this.grid = newBoard
-        this.resultGrid = newResultBoard
-    }
-
+    // this function zeroes out the grid variable (thus creating
+    // a dead grid)
     clearGrid() {
         for(let col = 0; col < this.width; col++) {
             for(let row = 0; row < this.height; row++) {
@@ -68,10 +52,14 @@ class Board {
         this.height = height
     }
 
+    // this function takes a grid, cell coordinates, and cell status in
+    // order to update the particular cell
     setCell(grid, x, y, status) {
         x = parseInt(x)
         y = parseInt(y)
 
+        // a check of coordinates to make sure they are within the
+        // grid bounds
         if(x < this.width && y < this.height){
             grid[x][y] = status
         }
@@ -84,6 +72,8 @@ class Board {
         return this.grid[x][y]
     }
 
+    // this function checks a cell's 8 neighors to see if they are
+    // DEAD or ALIVE and returns the number of ALIVE neighbors
     liveNeighbors(x, y) {
         x = parseInt(x)
         y = parseInt(y)
@@ -109,6 +99,9 @@ class Board {
         return liveNeighbors
     }
 
+    // this function takes a cell's coordinates, gets the cell's status
+    // and calls liveNeighbors() in order to determine the cell's next state
+    // according to the rules of Conway's Game of Life
     nextState(x, y) {
         let neighbors = this.liveNeighbors(x, y)
         let cellStatus = this.getCell(x, y)
@@ -127,16 +120,8 @@ class Board {
         }
     }
 
-    swapGrids() {
-        var wrapper = {}
-        wrapper.wrappedGrid = this.grid
-        wrapper.wrappedGridResult = this.resultGrid
-
-        let temp = wrapper.wrappedGrid
-        wrapper.wrappedGrid = wrapper.wrappedResultGrid
-        wrapper.wrappedResultGrid = temp
-    }
-
+    // this function copies the results of a tick() from the
+    // resultGrid to the grid
     copyResults() {
         for(let col = 0; col < this.width; col++) {
             for(let row = 0; row < this.height; row++) {
@@ -146,6 +131,9 @@ class Board {
     }
 
 
+    // this function writes the next grid state into resultGrid
+    // using setCell() and nextState() and then copies the results
+    // back into grid using copyResults()
     tick() {
         for(let col = 0; col < this.width; col++) {
             for(let row = 0; row < this.height; row++) {
@@ -155,6 +143,8 @@ class Board {
         this.copyResults()
     }
 
+    // this function returns true if each cell inside of grid is DEAD
+    // returns false otherwise
     deadGrid() {
       for(let col = 0; col < this.width; col ++) {
         for(let row = 0; row < this.height; row++) {
