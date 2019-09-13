@@ -33,15 +33,15 @@ class Board {
 
     createGrids() {
         let newBoard = new Array(parseInt(this.width)).fill(0)
-        let newResultsBoard = new Array(parseInt(this.height))
+        let newResultBoard = new Array(parseInt(this.height))
 
         for(let col = 0; col < this.width; col++) {
             newBoard[col] = new Array(parseInt(this.height)).fill(0)
-            newResultsBoard[col] = new Array(parseInt(this.height)).fill(0)
+            newResultBoard[col] = new Array(parseInt(this.height)).fill(0)
         }
 
         this.grid = newBoard
-        this.resultsGrid = newResultsBoard
+        this.resultGrid = newResultBoard
     }
 
     clearGrid() {
@@ -69,16 +69,11 @@ class Board {
     }
 
     setCell(grid, x, y, status) {
-        let xInt = parseInt(x)
-        let yInt = parseInt(y)
+        x = parseInt(x)
+        y = parseInt(y)
 
-        if(xInt < this.width && yInt < this.height){
-            console.log(this.width + ' ' + this.height)
-            console.log('xInt: ' + xInt + ' yInt: ' + yInt)
-            //if(grid[xInt] == undefined) {
-            //    grid[xInt] = []
-            //}
-            grid[xInt][yInt] = status
+        if(x < this.width && y < this.height){
+            grid[x][y] = status
         }
         else {
             console.error('(' + x + ', ' + y + ') is out of bounds.')
@@ -90,23 +85,26 @@ class Board {
     }
 
     liveNeighbors(x, y) {
+        x = parseInt(x)
+        y = parseInt(y)
+
         let liveNeighbors = 0;
 
-        liveNeighbors += this.getCell((x + this.width - 1) % this.width, (y + this.height + 1) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width) - 1) % parseInt(this.width), (y + parseInt(this.height) + 1) % parseInt(this.height))
 
-        liveNeighbors += this.getCell((x + this.width) % this.width, (y + this.height + 1) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width)) % parseInt(this.width), (y + parseInt(this.height) + 1) % parseInt(this.height))
 
-        liveNeighbors += this.getCell((x + this.width + 1) % this.width, (y + this.height + 1) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width) + 1) % parseInt(this.width), (y + parseInt(this.height) + 1) % parseInt(this.height))
 
-        liveNeighbors += this.getCell((x + this.width + 1) % this.width, (y + this.height) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width) + 1) % parseInt(this.width), (y + parseInt(this.height)) % parseInt(this.height))
 
-        liveNeighbors += this.getCell((x + this.width + 1) % this.width, (y + this.height - 1) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width) + 1) % parseInt(this.width), (y + parseInt(this.height) - 1) % parseInt(this.height))
 
-        liveNeighbors += this.getCell((x + this.width) % this.width, (y + this.height - 1) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width)) % parseInt(this.width), (y + parseInt(this.height) - 1) % parseInt(this.height))
 
-        liveNeighbors += this.getCell((x + this.width - 1) % this.width, (y + this.height - 1) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width) - 1) % parseInt(this.width), (y + parseInt(this.height) - 1) % parseInt(this.height))
 
-        liveNeighbors += this.getCell((x + this.width - 1) % this.width, (y + this.height) % this.height)
+        liveNeighbors += this.getCell((x + parseInt(this.width) - 1) % parseInt(this.width), (y + parseInt(this.height)) % parseInt(this.height))
 
         return liveNeighbors
     }
@@ -166,30 +164,5 @@ class Board {
         }
       }
       return true
-    }
-
-    printGrid() {
-        let str = ''
-
-        for(let col = 0; col < this.width; col++) {
-            for(let row = 0; row < this.height; row++) {
-                str += this.grid[col][row] + ' | '
-            }
-            console.log(str)
-            str = ''
-        }
-    }
-
-
-    printResultGrid() {
-        let str = ''
-
-        for(let col = 0; col < this.width; col++){
-            this.resultGrid[col].forEach(function (cell){
-                str += cell + ' | '
-            })
-            console.log(str)
-            str = ''
-        }
     }
 }

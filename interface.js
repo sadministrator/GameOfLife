@@ -5,28 +5,19 @@ $('#api').click(function(event) {
 })
 
 $('#rows').change(function(event) {
-    game.setHeight($('#rows').val())
+    game.createAll()
     console.log('Updated rows: ' + $('#rows').val())
 
 })
 
 $('#cols').change(function(event) {
-    game.setWidth($('#cols').val())
+    game.createAll()
     console.log('Updated cols: ' + $('#cols').val())
 })
 
 $('#create').click(function(event) {
+    game.createAll()
     console.log('Created board.')
-    game.setHeight($('#rows').val())
-    game.setWidth($('#cols').val())
-    game.setDelay($('#delay').val())
-    //game.board.createGrids()
-    game.board.grid = game.board.createGrid()
-    game.board.resultsGrid = game.board.createGrid()
-    console.log(game.board.grid)
-    //game.board.clearGrid()
-    game.createTable()
-    game.render()
 })
 
 $('#delay').change(function(event) {
@@ -35,8 +26,6 @@ $('#delay').change(function(event) {
 })
 
 $('#play').click(function(event) {
-    //game.setHeight($('#rows').val())
-    //game.setWidth($('#cols').val())
     $(this).attr('disabled', 'disabled')
     $('#next').attr('disabled', 'disabled')
     $('#pause').removeAttr('disabled')
@@ -138,6 +127,16 @@ class UI {
         }
     }
 
+    createAll(){
+        game.setHeight($('#rows').val())
+        game.setWidth($('#cols').val())
+        game.setDelay($('#delay').val())
+        game.board.grid = game.board.createGrid()
+        game.board.resultGrid = game.board.createGrid()
+        game.createTable()
+        game.render()
+    }
+
     toggleCell(x, y) {
         if(this.board.getCell(x, y) == ALIVE) {
             this.board.setCell(this.board.grid, x, y, DEAD)
@@ -151,7 +150,6 @@ class UI {
     next() {
         this.board.tick()
         this.render()
-        this.board.printGrid()
     }
 
     play(obj) {
