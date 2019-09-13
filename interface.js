@@ -2,7 +2,9 @@
 
 // clicking API button GETs a JSON board
 $('#api').click(function(event) {
-    console.log('api')
+    let url = 'https://api.noopschallenge.com/automatabot/rules/conway/random/'
+    game.board.fetchGrid(url, game)
+    console.log('API grid fetched, created, and rendered.')
 })
 
 // changing the #width field updates all fields, createTable(), and render()

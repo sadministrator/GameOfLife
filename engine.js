@@ -155,4 +155,36 @@ class Board {
       }
       return true
     }
+
+    // This function sends a get request to the url (and uses obj parameter
+    // to replace 'this'). The JSON response is parsed, and the resulting
+    // array of arrays is copied to grid and rendered
+    fetchGrid(url, obj) {
+        fetch(url).then(function(response) {
+            return response.json()
+        }).then(function(data) {
+            let newGrid = data.cells
+            let width = newGrid.length
+            let height = newGrid[0].length
+
+            obj.setWidth(width)
+            obj.setHeight(height)
+            obj.board.grid = obj.board.createGrid()
+            obj.board.resultGrid = obj.board.createGrid()
+
+            for(let col = 0; col < obj.width; col++) {
+                for(let row = 0; row < obj.height; row++) {
+                    obj.board.grid[col][row] = newGrid[col][row]
+                }
+            }
+            game.createTable()
+            game.render()
+            console.log(game.getWidth())
+            console.log(game.getHeight())
+            $('width').val(game.getWidth())
+            $('height').val(game.getHeight())
+        }).catch(function() {
+            console.error("Error fetching.")
+        })
+    }
 }
